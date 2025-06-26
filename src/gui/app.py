@@ -5,15 +5,14 @@ from newsletter_gen.crew import NewsletterGenCrew
 class NewsletterGenUI:
 
     def load_html_template(self):
-        with open("src/newsletter_gen/config/newsletter_template.html", "r") as file:
+        with open("src/newsletter_gen/config/cv_template.html", "r") as file:
             html_template = file.read()
 
         return html_template
 
-    def generate_newsletter(self, topic, personal_message):
+    def generate_newsletter(self, topic):
         inputs = {
             "topic": topic,
-            "personal_message": personal_message,
             "html_template": self.load_html_template(),
         }
         return NewsletterGenCrew().crew().kickoff(inputs=inputs)
@@ -22,7 +21,7 @@ class NewsletterGenUI:
 
         if st.session_state.generating:
             st.session_state.newsletter = self.generate_newsletter(
-                st.session_state.topic, st.session_state.personal_message
+                st.session_state.topic
             )
 
         if st.session_state.newsletter and st.session_state.newsletter != "":
@@ -51,7 +50,6 @@ class NewsletterGenUI:
 
             st.text_area(
                 "Your personal message (to include at the top of the newsletter)",
-                key="personal_message",
                 placeholder="Dear readers, welcome to the newsletter!",
             )
 
@@ -63,9 +61,6 @@ class NewsletterGenUI:
 
         if "topic" not in st.session_state:
             st.session_state.topic = ""
-
-        if "personal_message" not in st.session_state:
-            st.session_state.personal_message = ""
 
         if "newsletter" not in st.session_state:
             st.session_state.newsletter = ""

@@ -21,12 +21,7 @@ class NewsletterGenCrew:
     tasks_config = "config/tasks.yaml"
 
     def llm(self):
-        # llm = ChatAnthropic(model_name="claude-3-sonnet-20240229", max_tokens=4096)
         llm = ChatOpenAI(model_name="gpt-4o-mini", max_tokens=4096)
-        # llm = ChatGroq(model="llama3-70b-8192")
-        # llm = ChatGroq(model="mixtral-8x7b-32768")
-        # llm = ChatGoogleGenerativeAI(google_api_key=os.getenv("GOOGLE_API_KEY"))
-
         return llm
 
     def step_callback(
@@ -68,9 +63,9 @@ class NewsletterGenCrew:
                 st.write(agent_output)
 
     @agent
-    def researcher(self) -> Agent:
+    def job_analyst(self) -> Agent:
         return Agent(
-            config=self.agents_config["researcher"],
+            config=self.agents_config["job_analyst"],
             tools=[SearchAndContents(), FindSimilar(), GetContents()],
             verbose=True,
             llm=self.llm(),
@@ -78,9 +73,9 @@ class NewsletterGenCrew:
         )
 
     @agent
-    def editor(self) -> Agent:
+    def skills_matching(self) -> Agent:
         return Agent(
-            config=self.agents_config["editor"],
+            config=self.agents_config["skills_matching"],
             verbose=True,
             tools=[SearchAndContents(), FindSimilar(), GetContents()],
             llm=self.llm(),
@@ -88,9 +83,9 @@ class NewsletterGenCrew:
         )
 
     @agent
-    def designer(self) -> Agent:
+    def skill_matcher_agent(self) -> Agent:
         return Agent(
-            config=self.agents_config["designer"],
+            config=self.agents_config["skill_matcher_agent"],
             verbose=True,
             allow_delegation=False,
             llm=self.llm(),
@@ -98,27 +93,27 @@ class NewsletterGenCrew:
         )
 
     @task
-    def research_task(self) -> Task:
+    def job_analysis(self) -> Task:
         return Task(
-            config=self.tasks_config["research_task"],
-            agent=self.researcher(),
-            output_file=f"logs/{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_research_task.md",
+            config=self.tasks_config["job_analysis"],
+            agent=self.job_analyst(),
+            output_file=f"logs/{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_job_analysis.md",
         )
 
     @task
-    def edit_task(self) -> Task:
+    def skills_matching(self) -> Task:
         return Task(
-            config=self.tasks_config["edit_task"],
-            agent=self.editor(),
-            output_file=f"logs/{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_edit_task.md",
+            config=self.tasks_config["skills_matching"],
+            agent=self.skills_matching(),
+            output_file=f"logs/{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_skills_matching.md",
         )
 
     @task
-    def newsletter_task(self) -> Task:
+    def cv_generation(self) -> Task:
         return Task(
-            config=self.tasks_config["newsletter_task"],
-            agent=self.designer(),
-            output_file=f"logs/{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_newsletter_task.html",
+            config=self.tasks_config["cv_generation"],
+            agent=self.skill_matcher_agent(),
+            output_file=f"logs/{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_cv_generation.html",
         )
 
     @crew
