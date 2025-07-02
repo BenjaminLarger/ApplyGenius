@@ -1,15 +1,12 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
-from newsletter_gen.tools.research import SearchAndContents, FindSimilar, GetContents
-from langchain_anthropic import ChatAnthropic
-from langchain_groq import ChatGroq
+from newsletter_gen.tools.tools import JobAnalysisTool, SkillsMatcherTool, HTMLGeneratorTool
 from langchain_openai import ChatOpenAI
 from datetime import datetime
 import streamlit as st
 from typing import Union, List, Tuple, Dict
 from langchain_core.agents import AgentFinish
 import json
-from langchain_google_genai import ChatGoogleGenerativeAI
 import os
 
 
@@ -66,30 +63,33 @@ class NewsletterGenCrew:
     def job_analyst(self) -> Agent:
         return Agent(
             config=self.agents_config["job_analyst"],
-            tools=[SearchAndContents(), FindSimilar(), GetContents()],
-            verbose=True,
-            llm=self.llm(),
-            step_callback=lambda step: self.step_callback(step, "Research Agent"),
-        )
-
-    @agent
-    def skills_matching(self) -> Agent:
-        return Agent(
-            config=self.agents_config["skills_matching"],
-            verbose=True,
-            tools=[SearchAndContents(), FindSimilar(), GetContents()],
-            llm=self.llm(),
-            step_callback=lambda step: self.step_callback(step, "Chief Editor"),
-        )
-
-    @agent
-    def skill_matcher_agent(self) -> Agent:
-        return Agent(
-            config=self.agents_config["skill_matcher_agent"],
+            tools=[JobAnalysisTool()],
             verbose=True,
             allow_delegation=False,
             llm=self.llm(),
-            step_callback=lambda step: self.step_callback(step, "HTML Writer"),
+            # step_callback=lambda step: self.step_callback(step, "Research Agent"),
+        )
+
+    @agent
+    def skills_matcher(self) -> Agent:
+        return Agent(
+            config=self.agents_config["skills_matcher"],
+            verbose=True,
+            tools=[SkillsMatcherTool()],
+            allow_delegation=False,
+            llm=self.llm(),
+            # step_callback=lambda step: self.step_callback(step, "Chief Editor"),
+        )
+
+    @agent
+    def html_generator(self) -> Agent:
+        return Agent(
+            config=self.agents_config["html_generator"],
+            verbose=True,
+            tools=[HTMLGeneratorTool()],
+            allow_delegation=False,
+            llm=self.llm(),
+            # step_callback=lambda step: self.step_callback(step, "HTML Writer"),
         )
 
     @task
@@ -104,7 +104,7 @@ class NewsletterGenCrew:
     def skills_matching(self) -> Task:
         return Task(
             config=self.tasks_config["skills_matching"],
-            agent=self.skills_matching(),
+            agent=self.skills_matcher(),
             output_file=f"logs/{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_skills_matching.md",
         )
 
@@ -112,7 +112,7 @@ class NewsletterGenCrew:
     def cv_generation(self) -> Task:
         return Task(
             config=self.tasks_config["cv_generation"],
-            agent=self.skill_matcher_agent(),
+            agent=self.html_generator(),
             output_file=f"logs/{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_cv_generation.html",
         )
 

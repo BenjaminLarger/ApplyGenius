@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 from newsletter_gen.crew import NewsletterGenCrew
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
 def load_html_template(): 
     with open('src/newsletter_gen/config/cv_template.html', 'r') as file:
         html_template = file.read()

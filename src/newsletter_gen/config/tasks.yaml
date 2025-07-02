@@ -3,9 +3,8 @@ job_analysis:
   expected_output: |
     A structured JSON object containing:
     - job_title: Exact job title from posting
-    - location: City and country (or "Remote" if applicable)
     - target_location: Location to use in CV (job location or "Malaga, Spain" if remote)
-    - required_skills: Array of technical skills ranked by importance
+    - required_skills: List of technical skills ranked by importance
     - preferred_tools: List of tools/technologies mentioned
     - experience_level: Junior/Mid/Senior level indication
     - key_requirements: Top 5 most critical requirements
@@ -24,26 +23,26 @@ skills_matching:
     - project_selection_rationale: Why these projects were chosen
     - emphasis_areas: Which sections need the most adaptation
     - content_customization: Specific content recommendations for CV sections
-  agent: skills_matcher
-  tools:
-    - skills_database_tool
+  agent: skills_matching
   context:
     - [job_analysis]
 
 cv_generation:
-  description: "Generate the final adapted CV in HTML format using the predefined HTML template while incorporating all strategic recommendations from the skills matching analysis. Populate the template with the candidate's information, emphasizing the prioritized skills and tools, featuring the 2 selected side projects prominently, and updating the location based on job requirements (job location or Malaga if remote). Ensure the output maintains professional formatting and creates a cohesive document tailored to the job opportunity."
-  expected_output: |
-    A complete package containing:
-    - adapted_cv.html: Final HTML file with all adaptations applied
-    - styling_preserved: Confirmation that original template styling is maintained
-    - structure_integrity: Verification that HTML structure is valid
-    - customization_summary: Summary of all modifications made based on job requirements
-    - quality_check: Validation that all required elements are present and properly formatted
-    - file_metadata: Information about the generated file
-  agent: html_generator
-  tools:
-    - html_generator_tool
-    - file_io_tool
+  description: >
+    Fill the following HTML template with exactly the same information that is given to you. Generate the final adapted CV in HTML format using the predefined HTML template while incorporating all strategic recommendations from the skills matching analysis. Populate the template with the candidate's information, emphasizing the prioritized skills and tools, featuring the 2 selected side projects prominently, and updating the location based on job requirements (job location or Malaga if remote). Ensure the output maintains professional formatting and creates a cohesive document tailored to the job opportunity.
+
+    Follow these rules:
+    - Do not truncate the information or change the order of the elements.
+    - Do not add any additional information to the curriculum.
+    - Ensure the HTML structure is valid and well-formed.
+    - Maintain the original template's styling and visual appeal.
+    - Include all required elements such as contact information, skills, projects, and experience.
+    - Validate that the final HTML is properly formatted and ready for use.
+
+    {html_template}
+  expected_output: >
+    Return ONLY the contents of the HTML template, without any tripple quotes like '```', '```html' or any other text. 
+    This output will be saved as a HTML file.
   context:
     - [job_analysis]
     - [skills_matching]

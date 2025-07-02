@@ -1,13 +1,24 @@
 import asyncio
 from playwright.async_api import async_playwright
+import logging
+
+# Set up logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 async def html_to_pdf(html_content, output_path):
-    async with async_playwright() as p:
-        browser = await p.chromium.launch()
-        page = await browser.new_page()
-        await page.set_content(html_content)
-        await page.pdf(path=output_path)
-        await browser.close()
+    try:
+        async with async_playwright() as p:
+            browser = await p.chromium.launch()
+            page = await browser.new_page()
+            await page.set_content(html_content)
+            await page.pdf(path=output_path)
+            await browser.close()
+        logger.info(f"PDF generated successfully: {output_path}")
+        return True
+    except Exception as e:
+        logger.error(f"Error generating PDF: {str(e)}")
+        return False
 
 # HTML content
 html_content = '''

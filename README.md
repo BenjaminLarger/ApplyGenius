@@ -1,6 +1,13 @@
-# NewsletterGen Crew with GUI
+# CV Generator with CrewAI
 
-Welcome to the NewsletterGen Crew project, powered by [crewAI](https://crewai.com). This template is designed to help you set up a multi-agent AI system with ease, leveraging the powerful and flexible framework provided by crewAI. Our goal is to enable your agents to collaborate effectively on complex tasks, maximizing their collective intelligence and capabilities.
+This project uses CrewAI to automatically tailor CVs for specific job applications. It analyzes job postings, matches skills to requirements, and generates a customized HTML CV ready for submission.
+
+## Key Features
+
+- **Job Analysis**: Extracts critical requirements from job postings
+- **Skills Matching**: Maps candidate skills to job requirements
+- **HTML CV Generation**: Creates a professionally formatted CV in HTML
+- **PDF Conversion**: Converts HTML CVs to PDF format for submission
 
 ## Installation
 
@@ -21,14 +28,49 @@ poetry lock
 ```bash
 poetry install
 ```
-### Customizing
 
-**Add your `OPENAI_API_KEY` into the `.env` file**
+### Alternatively, you can use pip:
+
+```bash
+pip install -r requirements.txt
+```
+
+## Configuration
+
+**Set your API keys in the `.env` file**
+
+```
+OPENAI_API_KEY=your_openai_key_here
+ANTHROPIC_API_KEY=your_anthropic_key_here  # Optional
+```
+
+## Usage
+
+1. Start the Streamlit interface:
+
+```bash
+poetry run streamlit run src/gui/app.py
+```
+
+2. Paste the job posting text into the input field
+3. Click "Generate CV" to start the process
+4. The system will analyze the job, match skills, and generate a tailored CV
+5. Download the HTML or PDF version of your customized CV
+
+## Customizing
 
 - Modify `src/newsletter_gen/config/agents.yaml` to define your agents
 - Modify `src/newsletter_gen/config/tasks.yaml` to define your tasks
-- Modify `src/newsletter_gen/crew.py` to add your own logic, tools and specific args
-- Modify `src/newsletter_gen/main.py` to add custom inputs for your agents and tasks
+- Modify `src/newsletter_gen/config/cv_template.html` to change the CV template
+- Modify `src/newsletter_gen/crew.py` to add your own logic and tools
+
+## Converting HTML to PDF
+
+The system uses Playwright to convert HTML CVs to PDF format. Make sure Playwright is properly installed:
+
+```bash
+playwright install chromium
+```
 
 ## Running the Project
 
