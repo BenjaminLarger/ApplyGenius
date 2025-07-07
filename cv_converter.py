@@ -240,7 +240,12 @@ html_content = '''
 '''
 
 # PDF path to save
-pdf_path = 'example_from_html.pdf'
+html_path = '/home/blarger/Desktop/projects/AI-Agents/finvest-news-ai/src/newsletter_gen/config/cv_template.html'
+with open(html_path, 'r') as file:
+    html_content = file.read()
+
+pdf_path = 'cv_generation.pdf'
+
 
 # Generate PDF
 asyncio.run(html_to_pdf(html_content, pdf_path))

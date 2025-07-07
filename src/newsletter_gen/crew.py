@@ -1,13 +1,8 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
-from newsletter_gen.tools.tools import JobAnalysisTool, SkillsMatcherTool, HTMLGeneratorTool
+from newsletter_gen.tools.tools import CVConverterHtmlToPdf
 from langchain_openai import ChatOpenAI
 from datetime import datetime
-import streamlit as st
-from typing import Union, List, Tuple, Dict
-from langchain_core.agents import AgentFinish
-import json
-import os
 
 
 @CrewBase
@@ -21,49 +16,49 @@ class NewsletterGenCrew:
         llm = ChatOpenAI(model_name="gpt-4o-mini", max_tokens=4096)
         return llm
 
-    def step_callback(
-        self,
-        agent_output: Union[str, List[Tuple[Dict, str]], AgentFinish],
-        agent_name,
-        *args,
-    ):
-        with st.chat_message("AI"):
-            # Try to parse the output if it is a JSON string
-            if isinstance(agent_output, str):
-                try:
-                    agent_output = json.loads(agent_output)
-                except json.JSONDecodeError:
-                    pass
+    # def step_callback(
+    #     self,
+    #     agent_output: Union[str, List[Tuple[Dict, str]], AgentFinish],
+    #     agent_name,
+    #     *args,
+    # ):
+    #     with st.chat_message("AI"):
+    #         # Try to parse the output if it is a JSON string
+    #         if isinstance(agent_output, str):
+    #             try:
+    #                 agent_output = json.loads(agent_output)
+    #             except json.JSONDecodeError:
+    #                 pass
 
-            if isinstance(agent_output, list) and all(
-                isinstance(item, tuple) for item in agent_output
-            ):
+    #         if isinstance(agent_output, list) and all(
+    #             isinstance(item, tuple) for item in agent_output
+    #         ):
 
-                for action, description in agent_output:
-                    # Print attributes based on assumed structure
-                    st.write(f"Agent Name: {agent_name}")
-                    st.write(f"Tool used: {getattr(action, 'tool', 'Unknown')}")
-                    st.write(f"Tool input: {getattr(action, 'tool_input', 'Unknown')}")
-                    st.write(f"{getattr(action, 'log', 'Unknown')}")
-                    with st.expander("Show observation"):
-                        st.markdown(f"Observation\n\n{description}")
+    #             for action, description in agent_output:
+    #                 # Print attributes based on assumed structure
+    #                 st.write(f"Agent Name: {agent_name}")
+    #                 st.write(f"Tool used: {getattr(action, 'tool', 'Unknown')}")
+    #                 st.write(f"Tool input: {getattr(action, 'tool_input', 'Unknown')}")
+    #                 st.write(f"{getattr(action, 'log', 'Unknown')}")
+    #                 with st.expander("Show observation"):
+    #                     st.markdown(f"Observation\n\n{description}")
 
-            # Check if the output is a dictionary as in the second case
-            elif isinstance(agent_output, AgentFinish):
-                st.write(f"Agent Name: {agent_name}")
-                output = agent_output.return_values
-                st.write(f"I finished my task:\n{output['output']}")
+    #         # Check if the output is a dictionary as in the second case
+    #         elif isinstance(agent_output, AgentFinish):
+    #             st.write(f"Agent Name: {agent_name}")
+    #             output = agent_output.return_values
+    #             st.write(f"I finished my task:\n{output['output']}")
 
-            # Handle unexpected formats
-            else:
-                st.write(type(agent_output))
-                st.write(agent_output)
+    #         # Handle unexpected formats
+    #         else:
+    #             st.write(type(agent_output))
+    #             st.write(agent_output)
 
     @agent
     def job_analyst(self) -> Agent:
         return Agent(
             config=self.agents_config["job_analyst"],
-            tools=[JobAnalysisTool()],
+            # tools=[JobAnalysisTool()],
             verbose=True,
             allow_delegation=False,
             llm=self.llm(),
@@ -75,7 +70,7 @@ class NewsletterGenCrew:
         return Agent(
             config=self.agents_config["skills_matcher"],
             verbose=True,
-            tools=[SkillsMatcherTool()],
+            # tools=[SkillsMatcherTool()],
             allow_delegation=False,
             llm=self.llm(),
             # step_callback=lambda step: self.step_callback(step, "Chief Editor"),
@@ -86,7 +81,7 @@ class NewsletterGenCrew:
         return Agent(
             config=self.agents_config["html_generator"],
             verbose=True,
-            tools=[HTMLGeneratorTool()],
+            # tools=[HTMLGeneratorTool()],
             allow_delegation=False,
             llm=self.llm(),
             # step_callback=lambda step: self.step_callback(step, "HTML Writer"),
@@ -106,6 +101,7 @@ class NewsletterGenCrew:
             config=self.tasks_config["skills_matching"],
             agent=self.skills_matcher(),
             output_file=f"logs/{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_skills_matching.md",
+            context=[self.job_analysis()],
         )
 
     @task
@@ -113,7 +109,9 @@ class NewsletterGenCrew:
         return Task(
             config=self.tasks_config["cv_generation"],
             agent=self.html_generator(),
-            output_file=f"logs/{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_cv_generation.html",
+            output_file=f"output/{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_cv_generation.html",
+            tools=[CVConverterHtmlToPdf()],
+            context=[self.job_analysis(), self.skills_matching()],
         )
 
     @crew

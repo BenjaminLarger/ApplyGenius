@@ -1,0 +1,40 @@
+À propos de l’offre d’emploi
+Roboyo is not a typical technology consultancy. We have been at the forefront of Business Process Automation since the sector began, less than a decade ago.
+We started as pioneers. Today, we are the world’s largest specialist Intelligent Automation company and remain at the cutting edge. Our growth, success, and contribution to the success of our clients are a result of one thing – our people.
+We are united by our purpose, to take what’s possible to the next level – for our clients, our business, and each other.
+
+
+At Roboyo, you will experience a fun and innovative work environment with a dynamic and ambitious team passionate about technology and automation.
+
+
+Core Experience Required
+
+End-to-end AI agents design and delivery
+Microsoft Power Platform hands-on experience (Power Apps, Power Automate, Copilot Studio).
+Hands-on experience with other Conversational AI platforms
+UX expertise for chatbots – Frictionless, intuitive, and goal-oriented conversations
+Strong English writing skills
+Development experience in Python for custom NLP, API integration, back-end logic, automation, and data transformation
+Development experience in JavaScript/TypeScript/Node.js for chatbot logic, webhooks, channel integrations (e.g., in Cognigy or Copilot Studio)
+Experience on Azure cloud platforms (Databricks, OpenAI, Cognitive Search)
+
+
+Nice-to-Have / Bonus Skills
+
+Understanding of prompt engineering and model fine-tuning techniques
+Experience in automation technologies (RPA, BPM, Process Mining)
+Exposure to technical architecture, NLP, and ML concepts
+Experience in consulting and understanding customer processes
+Use of Azure DevOps, Git, or equivalent for versioning and delivery
+Experience with libraries and frameworks such as Hugging Face Transformers, LangChain, LlamaIndex, PEFT, Scikit-learn, TensorFlow, and PyTorch.
+Familiarity with Agile methodologies, especially Scrum
+
+
+Ways of Working
+
+Self-sufficient and proactive – Capable of delivering full solutions from ideation to deployment
+Collaborative – Effective communication with design, tech, and business stakeholders
+Analytical and user-focused – Committed to building meaningful experiences
+Comfortable working in international and cross-cultural projects
+
+
