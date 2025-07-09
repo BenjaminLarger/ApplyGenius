@@ -59,10 +59,10 @@ poetry run streamlit run src/gui/app.py
 
 ## Customizing
 
-- Modify `src/newsletter_gen/config/agents.yaml` to define your agents
-- Modify `src/newsletter_gen/config/tasks.yaml` to define your tasks
-- Modify `src/newsletter_gen/config/cv_template.html` to change the CV template
-- Modify `src/newsletter_gen/crew.py` to add your own logic and tools
+- Modify `src/cv_gen/config/agents.yaml` to define your agents
+- Modify `src/cv_gen/config/tasks.yaml` to define your tasks
+- Modify `src/cv_gen/config/cv_template.html` to change the CV template
+- Modify `src/cv_gen/crew.py` to add your own logic and tools
 
 ## Converting HTML to PDF
 
@@ -77,7 +77,7 @@ playwright install chromium
 To kickstart your crew of AI agents and begin task execution, run this from the root folder of your project:
 
 ```bash
-poetry run newsletter_gen
+poetry run cv_gen
 ```
 
 This command initializes the newsletter-gen Crew, assembling the agents and assigning them tasks as defined in your configuration.
