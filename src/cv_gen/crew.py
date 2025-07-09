@@ -1,6 +1,6 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
-from cv_gen.tools.tools import CVConverterHtmlToPdf, JobPostingScraper
+from cv_gen.tools.tools import ConverterHtmlToPdf, JobPostingScraper
 from langchain_openai import ChatOpenAI
 from datetime import datetime
 import os
@@ -39,9 +39,9 @@ class NewsletterGenCrew:
         )
 
     @agent
-    def html_generator(self) -> Agent:
+    def cv_html_generator(self) -> Agent:
         return Agent(
-            config=self.agents_config["html_generator"],
+            config=self.agents_config["cv_html_generator"],
             verbose=True,
             allow_delegation=False,
             llm=self.llm(),
@@ -51,7 +51,17 @@ class NewsletterGenCrew:
     def pdf_generator(self) -> Agent:
         return Agent(
             config=self.agents_config["pdf_generator"],
-            tools=[CVConverterHtmlToPdf()],
+            tools=[ConverterHtmlToPdf()],
+            verbose=True,
+            allow_delegation=False,
+            llm=self.llm(),
+        )
+    
+    @agent
+    def cover_letter_generator(self) -> Agent:
+        return Agent(
+            config=self.agents_config["cover_letter_generator"],
+            tools=[],
             verbose=True,
             allow_delegation=False,
             llm=self.llm(),
@@ -75,10 +85,10 @@ class NewsletterGenCrew:
         )
 
     @task
-    def html_generation(self) -> Task:
+    def cv_html_generation(self) -> Task:
         return Task(
-            config=self.tasks_config["html_generation"],
-            agent=self.html_generator(),
+            config=self.tasks_config["cv_html_generation"],
+            agent=self.cv_html_generator(),
             output_file=f"output/cv_{datetime.now().strftime('%Y-%m-%d')}.html",
             context=[self.job_analysis(), self.skills_matching()],
         )
@@ -88,8 +98,17 @@ class NewsletterGenCrew:
         return Task(
             config=self.tasks_config["pdf_generation"],
             agent=self.pdf_generator(),
-            context=[self.html_generation()],
+            context=[self.cv_html_generation(), self.cover_letter_html_generation()],
             # callback=self.pdf_task_callback,
+        )
+    
+    @task
+    def cover_letter_html_generation(self) -> Task:
+        return Task(
+            config=self.tasks_config["cover_letter_html_generation"],
+            agent=self.cover_letter_generator(),
+            output_file=f"output/cover_letter_{datetime.now().strftime('%Y-%m-%d')}.html",
+            context=[self.job_analysis(), self.skills_matching(), self.cv_html_generation()],
         )
     
     def pdf_task_callback(self, output):

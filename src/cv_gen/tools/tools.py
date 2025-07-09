@@ -4,36 +4,11 @@ import logging
 import asyncio
 from datetime import datetime
 import os
+from crewai_tools import BaseTool, ScrapeWebsiteTool
+
 logger = logging.getLogger(__name__)
 
-class JobAnalysisTool(BaseTool):
-    name: str = "Job Analysis Tool"
-    description: str = "Extract requirements from job postings"
-    
-    def _run(self, job_text: str) -> dict:
-        # This is a stub - the actual analysis will be done by the LLM
-        # We're just providing a placeholder for the CrewAI framework
-        return {"status": "Analysis requested", "job_text_length": len(job_text)}
-
-class SkillsMatcherTool(BaseTool):
-    name: str = "Skills Matcher Tool"
-    description: str = "Match job requirements with candidate skills"
-    
-    def _run(self, job_requirements: dict) -> dict:
-        # This is a stub - the actual matching will be done by the LLM
-        # We're just providing a placeholder for the CrewAI framework
-        return {"status": "Matching requested", "requirements_count": len(job_requirements)}
-
-class HTMLGeneratorTool(BaseTool):
-    name: str = "HTML Generator Tool"
-    description: str = "Generate CV using template"
-    
-    def _run(self, matched_data: dict) -> str:
-        # This is a stub - the actual HTML generation will be done by the LLM
-        # We're just providing a placeholder for the CrewAI framework
-        return f"HTML generation requested with {len(matched_data)} data points"
-    
-class CVConverterHtmlToPdf(BaseTool):
+class ConverterHtmlToPdf(BaseTool):
     name: str = "CV Converter HTML to PDF"
     description: str = "Convert HTML CV to PDF format"
     
@@ -62,21 +37,10 @@ class CVConverterHtmlToPdf(BaseTool):
         except Exception as e:
             logger.error(f"Error generating PDF: {str(e)}")
             return False
-
-    def _run(self) -> str:
-        """
-        Convert HTML content to PDF
         
-        Args:
-            html_content: The full HTML content to convert
-            
-        Returns:
-            A message indicating success or failure
-        """
-        # Try to read file from cv_{timestamp}.html
-        timestamp = datetime.now().strftime('%Y-%m-%d')
+    def read_and_clean_html(self, filename: str, timestamp: str = datetime.now().strftime('%Y-%m-%d')):
         try:
-            with open(f"output/cv_{timestamp}.html", 'r', encoding='utf-8') as file:
+            with open(f"output/{filename}{timestamp}.html", 'r', encoding='utf-8') as file:
                 html_content = file.read()
         except FileNotFoundError:
             logger.error(f"HTML file not found for timestamp {timestamp}. Please ensure the HTML generation task ran successfully.")
@@ -99,23 +63,55 @@ class CVConverterHtmlToPdf(BaseTool):
                     html_content = parsed['html_content']
             except:
                 pass
+        
+        logger.info(f"Successfully read and cleaned HTML content from {filename}{timestamp}.html")
+        logger.info(f"HTML content : {html_content}")
+        return html_content
                 
-        output_filename = f"output//cv_{timestamp}.pdf"
+    def _run(self) -> str:
+        """
+        Convert HTML content to PDF
+        
+        Args:
+            html_content: The full HTML content to convert
+            
+        Returns:
+            A message indicating success or failure
+        """
+        # Try to read file from cv_{timestamp}.html
+        timestamp = datetime.now().strftime('%Y-%m-%d')
+        message = ""
+        html_cv_content = self.read_and_clean_html("cv_")                
         
         # Write the HTML to a file for debugging
-        html_file = f"output/cv_{timestamp}.html"
-        with open(html_file, 'w', encoding='utf-8') as f:
-            f.write(html_content)
+        cv_html_dest = f"output/cv_{timestamp}.html"
+        with open(cv_html_dest, 'w', encoding='utf-8') as f:
+            f.write(html_cv_content)
             
         # Convert to PDF
-        success = asyncio.run(self.html_to_pdf(html_content, output_filename))
+        success = asyncio.run(self.html_to_pdf(html_cv_content, "output/cv_{timestamp}.pdf"))
         
         if success:
-            return f"Successfully generated PDF at {output_filename} and saved HTML at {html_file}"
+            message += f"Successfully generated PDF at {cv_html_dest} and saved HTML at {cv_html_dest}\n"
         else:
-            return f"Failed to generate PDF. HTML content saved at {html_file} for debugging."
+            message += f"Failed to generate PDF. HTML content saved at {cv_html_dest} for debugging."
         
-from crewai_tools import BaseTool, ScrapeWebsiteTool
+        cover_letter_html_content = self.read_and_clean_html("cover_letter_")
+        cover_letter_html_dest = f"output/cover_letter_{timestamp}.html"
+        with open(cover_letter_html_dest, 'w', encoding='utf-8') as f:
+            f.write(cover_letter_html_content)
+        
+        # Convert cover letter to PDF
+        success = asyncio.run(self.html_to_pdf(cover_letter_html_content, f"output/cover_letter_{timestamp}.pdf"))
+
+        if success:
+            message += f"Successfully generated cover letter PDF at {cover_letter_html_dest} and saved HTML at {cover_letter_html_dest}\n"
+        else:
+            message += f"Failed to generate cover letter PDF. HTML content saved at {cover_letter_html_dest} for debugging."
+        
+        return message
+
+        
 
 class JobPostingScraper(BaseTool):
     name: str = "Job Posting Scraper"

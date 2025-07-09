@@ -10,11 +10,17 @@ from cv_gen.crew import NewsletterGenCrew
 # Load environment variables from .env file
 load_dotenv()
 
-def load_html_template(): 
+def load_cv_template(): 
     with open('src/cv_gen/config/cv_template.html', 'r') as file:
-        html_template = file.read()
+        cv_template = file.read()
         
-    return html_template
+    return cv_template
+
+def load_cover_letter_template():
+    with open('src/cv_gen/config/cover_letter_template.html', 'r') as file:
+        cover_letter_template = file.read()
+
+    return cover_letter_template
 
 def load_job_offer():
     with open('src/cv_gen/config/job_offer.txt', 'r') as file:
@@ -41,10 +47,11 @@ def run():
     inputs = {
         'job_offer_url': job_url,
         'job_offer_fallback': fallback_job_text,  # Provide fallback text in case URL scraping fails
-        'html_template': load_html_template()
+        'cv_template': load_cv_template(),
+        'cover_letter_template': load_cover_letter_template()
     }
     
-    print("Starting CV generation process...")
+    print("Starting CV and cover letter generation process...")
     NewsletterGenCrew().crew().kickoff(inputs=inputs)
 
 if __name__ == "__main__":
