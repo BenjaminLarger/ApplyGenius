@@ -2,3 +2,8 @@
 logs/*
 output/*
 */__pycache__/*
+uploads/*
+.venv/
+venv/
+*.pyc
+.DS_Store

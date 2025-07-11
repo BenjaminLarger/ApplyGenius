@@ -89,7 +89,7 @@ class ConverterHtmlToPdf(BaseTool):
             f.write(html_cv_content)
             
         # Convert to PDF
-        success = asyncio.run(self.html_to_pdf(html_cv_content, "output/cv_{timestamp}.pdf"))
+        success = asyncio.run(self.html_to_pdf(html_cv_content, f"output/cv_{timestamp}.pdf"))
         
         if success:
             message += f"Successfully generated PDF at {cv_html_dest} and saved HTML at {cv_html_dest}\n"

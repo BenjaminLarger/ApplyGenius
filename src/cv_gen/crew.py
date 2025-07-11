@@ -1,11 +1,9 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
-from cv_gen.tools.tools import ConverterHtmlToPdf, JobPostingScraper
+from src.cv_gen.tools.tools import ConverterHtmlToPdf, JobPostingScraper
 from langchain_openai import ChatOpenAI
 from datetime import datetime
 import os
-import re
-import asyncio
 
 
 @CrewBase

@@ -31,6 +31,12 @@ def load_job_offer():
 
 def run():
     # Get the job URL from user input or use a default fallback
+    print("CV Generator - Command Line Interface")
+    print("-------------------------------------")
+    print("Note: For a more user-friendly interface, you can use the Streamlit UI:")
+    print("      streamlit run src/gui/app.py")
+    print("-------------------------------------\n")
+    
     job_url = input("Enter the job posting URL (or press Enter to use the default job offer): ")
     
     # Load the default job offer text as fallback
@@ -48,7 +54,7 @@ def run():
         'job_offer_url': job_url,
         'job_offer_fallback': fallback_job_text,  # Provide fallback text in case URL scraping fails
         'cv_template': load_cv_template(),
-        'cover_letter_template': load_cover_letter_template()
+        'cover_letter_template': load_cover_letter_template(),
     }
     
     print("Starting CV and cover letter generation process...")

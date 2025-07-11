@@ -20,9 +20,12 @@ python-dotenv = "^1.0.0"
 pypdf2 = "^3.0.1"
 playwright = "^1.40.0"
 jinja2 = "^3.1.2"
+streamlit = "^1.46.1"
 
 [tool.poetry.scripts]
 inverstor_insight = "inverstor_insight.main:run"
+cv_gen = "cv_gen.main:run"
+cv_gen_app = "cv_gen.gui.app:run"
 
 [build-system]
 requires = ["poetry-core"]
