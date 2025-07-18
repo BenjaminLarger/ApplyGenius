@@ -1,0 +1,29 @@
+{
+  "job_title": "AI Agent Engineer II",
+  "company_name": "Zendesk",
+  "job_description": "As an AI Agent Engineer II, you will be responsible for designing and implementing AI-driven solutions that enhance customer service experiences. You will work collaboratively with cross-functional teams to develop and optimize AI models, focusing on natural language processing and machine learning techniques to improve the performance and capabilities of our customer support systems.",
+  "target_location": "Remote, Germany",
+  "required_skills": [
+    "Natural Language Processing (NLP)",
+    "Machine Learning",
+    "Data Analysis",
+    "Software Development",
+    "Problem-Solving"
+  ],
+  "preferred_tools": [
+    "Python",
+    "TensorFlow",
+    "PyTorch",
+    "AWS",
+    "Docker"
+  ],
+  "experience_level": "Mid",
+  "key_requirements": [
+    "Proven experience in building and deploying machine learning models.",
+    "Strong understanding of NLP techniques and frameworks.",
+    "Ability to collaborate with cross-functional teams effectively.",
+    "Experience with cloud services (AWS preferred).",
+    "Solid programming skills in Python or similar languages."
+  ],
+  "company_focus": "Customer Service Technology, AI Solutions"
+}

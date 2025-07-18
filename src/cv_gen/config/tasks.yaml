@@ -11,6 +11,8 @@ job_analysis:
   expected_output: >
     A structured JSON object containing:
     - job_title: Exact job title from posting
+    - company_name: Name of the hiring company
+    - job_description: Summary of the job responsibilities and expectations
     - target_location: Location to use in CV (job location or "Malaga, Spain" if remote)
     - required_skills: List of technical skills ranked by importance
     - preferred_tools: List of tools/technologies mentioned
@@ -62,17 +64,23 @@ pdf_generation:
 
 cover_letter_html_generation:
   description: >
-    Generate the final adapted cover letter in HTML format using the predefined HTML template while incorporating all strategic recommendations from the skills matching analysis. Populate the template with the candidate's information, emphasizing the prioritized skills and tools, and updating the location based on job requirements (job location or Malaga if remote). Ensure the output maintains professional formatting and creates a cohesive document tailored to the job opportunity.
-    
-    Follow these rules:
-    - Do not truncate the information or change the order of the elements.
-    - Do not add any additional information to the curriculum.
-    - Ensure the HTML structure is valid and well-formed.
-    - Maintain the original template's styling and visual appeal.
-    - Include all required elements such as date, company name, job title, achievements, relevant skills/projects.
-    - Validate that the final HTML is properly formatted and ready for use.
+    Generate the final adapted cover letter in HTML format using the predefined HTML template. Your cover letter must be specifically tailored to the job description that has been analyzed.
 
+    Incorporate all essentials information from src/cv_gen/config/job_offer.txt. Populate the template with the candidate's information, emphasizing the prioritized skills and tools, and updating the location based on job requirements (job location or Malaga if remote).
+
+    The cover letter should:
+    - Address the specific requirements and qualifications mentioned in the job description
+    - Highlight how the candidate's experience and skills match the job requirements
+    - Reference specific details from the job posting to show careful attention to the employer's needs
+    - Maintain a professional tone and format appropriate for the industry and role
+    
+    Follow these technical guidelines:
+    - Ensure you use company's information and the job title from the job analysis
+    - Ensure the HTML structure is valid and well-formed
+    - Maintain the original template's styling and visual appeal
+    - Include all required elements such as date, company name, job title, achievements, relevant skills/projects
+    - Validate that the final HTML is properly formatted and ready for use
     
     {cover_letter_template}
   expected_output: >
-    A professionally formatted HTML cover letter that is personalized for the specific job opportunity.
+    A professionally formatted HTML cover letter that is personalized for the specific job opportunity, with clear references to the job requirements and how the candidate meets them.

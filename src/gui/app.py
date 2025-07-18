@@ -321,14 +321,36 @@ def run_cv_generation(job_description, job_url, cv_path, cover_letter_path, mode
         progress_container.info("Starting job analysis...")
         progress_bar.progress(30)
         
+        # Save the job description to the config file
+        job_offer_path = "src/cv_gen/config/job_offer.txt"
+        os.makedirs(os.path.dirname(job_offer_path), exist_ok=True)
+        
+        # If we have a direct job description (pasted text), save it immediately
+        if job_description:
+            # Write the job description directly to the file
+            with open(job_offer_path, "w", encoding="utf-8") as f:
+                f.write(job_description)
+            progress_container.info(f"Job description saved to configuration file")
+        # elif job_url:
+        #     # For URLs, save a temporary note - the actual content will be scraped by the job_analyst agent
+        #     with open(job_offer_path, "w", encoding="utf-8") as f:
+        #         # We're not saving just the URL anymore - the JobPostingScraper tool will replace this
+        #         # with the actual content
+        #         f.write(f"Job URL: {job_url}\n\nThis placeholder will be replaced with the actual job description when scraped by the job_analyst agent.")
+        #     progress_container.info(f"Job URL saved. Content will be scraped during processing.")
+        # else:
+        #     # No job description or URL provided
+        #     with open(job_offer_path, "w", encoding="utf-8") as f:
+        #         f.write("No job description or URL provided.")
+            progress_container.warning("No job description or URL provided. The generated documents may not be properly tailored.")
+        
         # Debug mode - show more detailed logs
         if debug_mode:
             st.text_area("Debug: Input data", json.dumps(inputs, indent=2), height=150)
         
         start_time = time.time()
-        # print(f"inputs = {inputs}")
-        st.info(f"inputs = {inputs}")
-        #result = NewsletterGenCrew().crew().kickoff(inputs=inputs)
+
+        result = NewsletterGenCrew().crew().kickoff(inputs=inputs)
         end_time = time.time()
         
         progress_container.info("Documents generated. Preparing final files...")
@@ -375,12 +397,12 @@ def run_cv_generation(job_description, job_url, cv_path, cover_letter_path, mode
             if os.path.exists(cv_html_path):
                 st.markdown(create_download_link(cv_html_path, "Download CV (HTML)"), unsafe_allow_html=True)
             else:
-                st.error("CV HTML file not found")
+                st.error(f"CV HTML file not found {cv_html_path}")
             
             if os.path.exists(cv_pdf_path):
                 st.markdown(create_download_link(cv_pdf_path, "Download CV (PDF)"), unsafe_allow_html=True)
             else:
-                st.error("CV PDF file not found")
+                st.error(f"CV PDF file not found {cv_pdf_path}")
         
         with col2:
             st.markdown("### Cover Letter")

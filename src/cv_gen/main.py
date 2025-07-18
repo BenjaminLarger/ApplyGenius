@@ -40,14 +40,27 @@ def run():
     job_url = input("Enter the job posting URL (or press Enter to use the default job offer): ")
     
     # Load the default job offer text as fallback
-    fallback_job_text = load_job_offer()
+    try:
+        fallback_job_text = load_job_offer()
+    except:
+        print("No default job offer found, creating an empty one...")
+        # Create an empty job offer file
+        os.makedirs(os.path.dirname('src/cv_gen/config/job_offer.txt'), exist_ok=True)
+        with open('src/cv_gen/config/job_offer.txt', 'w') as file:
+            file.write("")
+        fallback_job_text = ""
     
     # If no URL provided, use the default job offer text
     if not job_url:
-        job_url = fallback_job_text
+        job_url = ""
         print("Using default job offer text...")
     else:
         print(f"Using job posting URL: {job_url}")
+        
+        # Add https:// prefix if needed
+        if not job_url.startswith(('http://', 'https://')):
+            job_url = f"https://{job_url}"
+            print(f"Added 'https://' prefix: {job_url}")
     
     # Set up inputs for the crew
     inputs = {

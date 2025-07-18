@@ -1,40 +1,49 @@
-À propos de l’offre d’emploi
-Roboyo is not a typical technology consultancy. We have been at the forefront of Business Process Automation since the sector began, less than a decade ago.
-We started as pioneers. Today, we are the world’s largest specialist Intelligent Automation company and remain at the cutting edge. Our growth, success, and contribution to the success of our clients are a result of one thing – our people.
-We are united by our purpose, to take what’s possible to the next level – for our clients, our business, and each other.
+AI Agent Engineer II
+Zendesk - Remote, Germany
 
+About Zendesk:
+Zendesk is a service-first CRM company that builds support, sales, and customer engagement software designed to foster better customer relationships. From large enterprises to startups, we believe that powerful, innovative customer experiences should be within reach for every company, no matter the size, industry or ambition.
 
-At Roboyo, you will experience a fun and innovative work environment with a dynamic and ambitious team passionate about technology and automation.
+Job Description:
+We are looking for an AI Agent Engineer to join our AI team. In this role, you will be responsible for designing, developing, and optimizing AI-powered agents that enhance our customer service platform. You will work with state-of-the-art language models, develop sophisticated prompting techniques, and create systems that enable these AI agents to interact with tools, APIs, and other services.
 
+Key Responsibilities:
+• Design and implement AI agents using large language models (LLMs) like GPT-4, Claude, and other foundation models
+• Develop and optimize prompting strategies to achieve reliable and high-quality outputs
+• Create systems that allow AI agents to interact with external tools, APIs, and databases
+• Build evaluation frameworks to measure agent performance and continuously improve results
+• Collaborate with product, design, and research teams to define agent capabilities and user experiences
+• Implement safeguards and controls to ensure responsible AI use
+• Stay current with the latest developments in LLMs and AI agent architectures
+• Contribute to the development of agent frameworks and infrastructure
 
-Core Experience Required
+Requirements:
+• Bachelor's degree in Computer Science, Machine Learning, or related field
+• 3+ years of software engineering experience
+• 1+ years of experience working with large language models and building AI agents
+• Strong programming skills in Python
+• Experience with prompt engineering and LLM fine-tuning
+• Understanding of RAG (Retrieval Augmented Generation) techniques
+• Knowledge of NLP concepts and transformer architectures
+• Familiarity with frameworks like LangChain, CrewAI, or similar tools
+• Experience integrating AI systems with external services and APIs
+• Strong problem-solving skills and attention to detail
 
-End-to-end AI agents design and delivery
-Microsoft Power Platform hands-on experience (Power Apps, Power Automate, Copilot Studio).
-Hands-on experience with other Conversational AI platforms
-UX expertise for chatbots – Frictionless, intuitive, and goal-oriented conversations
-Strong English writing skills
-Development experience in Python for custom NLP, API integration, back-end logic, automation, and data transformation
-Development experience in JavaScript/TypeScript/Node.js for chatbot logic, webhooks, channel integrations (e.g., in Cognigy or Copilot Studio)
-Experience on Azure cloud platforms (Databricks, OpenAI, Cognitive Search)
+Preferred Qualifications:
+• Master's or PhD in Machine Learning, Natural Language Processing, or related field
+• Experience with building conversational AI systems
+• Knowledge of vector databases and semantic search
+• Experience with developing multi-agent systems
+• Contributions to open-source AI projects
+• Experience with LLM evaluation and red-teaming
+• Understanding of AI safety and alignment principles
 
-
-Nice-to-Have / Bonus Skills
-
-Understanding of prompt engineering and model fine-tuning techniques
-Experience in automation technologies (RPA, BPM, Process Mining)
-Exposure to technical architecture, NLP, and ML concepts
-Experience in consulting and understanding customer processes
-Use of Azure DevOps, Git, or equivalent for versioning and delivery
-Experience with libraries and frameworks such as Hugging Face Transformers, LangChain, LlamaIndex, PEFT, Scikit-learn, TensorFlow, and PyTorch.
-Familiarity with Agile methodologies, especially Scrum
-
-
-Ways of Working
-
-Self-sufficient and proactive – Capable of delivering full solutions from ideation to deployment
-Collaborative – Effective communication with design, tech, and business stakeholders
-Analytical and user-focused – Committed to building meaningful experiences
-Comfortable working in international and cross-cultural projects
-
-
+Benefits:
+• Competitive salary and equity package
+• Remote work flexibility
+• Health, dental, and vision insurance
+• Generous time off policy
+• Learning and development budget
+• Wellness programs
+• Home office stipend
+• Regular team off-sites and events
