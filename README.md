@@ -1,4 +1,4 @@
-# CV Generator with CrewAI
+# CV & Cover Letter Generator with CrewAI
 
 This project uses CrewAI to automatically tailor CVs and cover letters for specific job applications. It analyzes job postings, matches skills to requirements, generates customized HTML CVs and cover letters, and converts them to PDF format for submission.
 
